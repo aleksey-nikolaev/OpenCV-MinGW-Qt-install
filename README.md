@@ -1,7 +1,7 @@
 # OpenCV-MinGW-Qt-install
 it for any how use gui instead console. How to build OpenCV libs for Qt+mingw
 
-Зайдите на вики там всё подробно расписано
+Р—Р°Р№РґРёС‚Рµ РЅР° РІРёРєРё С‚Р°Рј РІСЃС‘ РїРѕРґСЂРѕР±РЅРѕ СЂР°СЃРїРёСЃР°РЅРѕ
 
 ## Build OpenCV3.0.0
 
