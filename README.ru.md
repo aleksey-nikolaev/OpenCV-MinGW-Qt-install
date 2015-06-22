@@ -50,15 +50,17 @@
 14. `mingw32-make`. Ждёёёёёёёёёёёёёём.
 14. `mingw32-make install`. Можно объединить `mingw32-make && mingw32-make install` в одной строке
 15. повторить с задания `CMAKE_BUILD_TYPE` для другого варианта
-16. По-желанию задать `BUILD_SHARED_LIBS = 0` и повторить
+16. По-желанию задать `BUILD_SHARED_LIBS = 0` и повторить. При этом, если есть желание, смените `CMAKE_INSTALL_PREFIX`, так как файлы в папке bin и include\opencv2\cvconfig.h различаются.
 
-Теперь в папке из `CMAKE_INSTALL_PREFIX` находится всё необходимое
+Теперь в папке из `CMAKE_INSTALL_PREFIX` находится всё необходимое.
 
 За `BUILD_TESTS = 0` отдельное спасибо [Nuzhny](http://rsdn.ru/account/info/32351) за то, что вспомнил.
 `WITH_IPP = 0` уже чаще встречается и кое-где объясняется почему. `WITH_DSHOW = 0` пришлось добавить из-за ошибки в
 
-    sources\modules\videoio\src\cap_dshow.cpp:2182:41: error:
-    'sprintf_instead_use_StringCbPrintfA_or_StringCchPrintfA' was not declared in this scope
+```
+sources\modules\videoio\src\cap_dshow.cpp:2182:41: error:
+'sprintf_instead_use_StringCbPrintfA_or_StringCchPrintfA' was not declared in this scope
+```
 
 ## Сборка OpenCV 2.4.11
 
@@ -66,4 +68,49 @@
   * `WITH_QT = 1`
   * `WITH_OPENGL = 1` 
 
-и всё.
+и всё. Компилируется значительно дольше.
+
+## Настройка проекта
+
+Для библиотек под win характерно наличие версии и признака `d` (для отладки). Под unix этого нет. Чтобы не было конфликтов можно настроить проект так:
+В среде сборки задать переменные (`CMAKE_INSTALL_PREFIX` помните? Или куда вы это перенесли?)
+Присвоено `OPENCV_INCLUDE_DIR` значение c:/Qt/opencv2.4.11/include
+Присвоено `OPENCV_MINGW_DIR` значение C:/Qt/opencv2.4.11/x64/mingw
+В `PATH` дописать c:\Qt\opencv2.4.11\x64\mingw\bin;c:\Qt\opencv2.4.11\x64\mingw\lib;c:\Qt\opencv2.4.11\x64\mingw\staticlib;
+
+Тогда в .pro можно лаконично оформить подключение
+
+```
+INCLUDEPATH += $$(OPENCV_INCLUDE_DIR)
+
+LIBS += -L$$(OPENCV_MINGW_DIR)/lib
+
+win32:CONFIG(release, debug|release):{
+    SUFFIX = 2411
+}
+else:win32:CONFIG(debug, debug|release):{
+    SUFFIX = 2411d
+}
+else:unix:{
+    SUFFIX =
+}
+
+LIBS += -lopencv_core$${SUFFIX} \
+        -lopencv_highgui$${SUFFIX} \
+        -lopencv_objdetect$${SUFFIX} \
+        -lopencv_imgproc$${SUFFIX} \
+        -lopencv_features2d$${SUFFIX} \
+        -lopencv_calib3d$${SUFFIX} \
+        -lopencv_contrib$${SUFFIX} \
+        -lopencv_nonfree$${SUFFIX} \
+        -lopencv_features2d$${SUFFIX} \
+        -lopencv_flann$${SUFFIX}
+```
+
+## настройка окна `cmd`
+
+Видели ошибку в `cap_dshow.cpp`? Так вот без настройки окна `cmd` её не видно - быстро уползает за экран из-за длинной портянки разные сообщений. Что делать?
+
+Если посмотреть контекстное меню (правая кнопка мыши) там где иконка (окно cmd в миниатюре), то там есть Умолчания и Свойства. Найдите в них Размер буфера экрана и поставьте значение по-больше (пару тысяч).
+
+Теперь самое важное останется доступным.
