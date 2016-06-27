@@ -1,5 +1,20 @@
 # Welcome to the OpenCV-MinGW-Qt-install wiki!
-Сборка OpenCV вызвала у меня кучу проблем. И пока всё свежо в памяти буду записывать. Потом переведу на английский.
+
+ * [Как настроить проект на использование OpenCV](https://github.com/aleksey-nikolaev/OpenCV-MinGW-Qt-install/wiki/Qt-pro-file-settings)
+ * [Что делать когда пропадают результаты компиляции в CMD](https://github.com/aleksey-nikolaev/OpenCV-MinGW-Qt-install/wiki/CMD-gui-settings)
+
+# Простой способ
+Вполне вероятно подойдёт для всех. Как это ни банально, но cmake проект можно открыть непосредственно в QtCreator. В этом случае будут прописаны все пути и зависимости корректно. Исследовать открытый таким образом проект не очень удобно, но никто не запрещает параллельно запустить cmake-gui и менять параметры по мере необходимости. А чтобы и cmake-gui работал в том же окружении что и QtCreator сделайте bat-файл с таким содержанием:
+
+```
+call "%QTDIR%\bin\qtenv2.bat"
+start "gui" /B "%CMAKEDIR%\bin\cmake-gui.exe"
+```
+где `QTDIR` и `CMAKEDIR` переменные с путями до Qt и CMake соответствено.
+
+# OpenCV 3.0.0
+## Подготовка к сборке
+Сборка OpenCV вызвала у меня кучу проблем. И пока всё свежо в памяти буду записывать.
 
 Забавно, что по сборке OpenCV написано невероятное количество инструкций, и все они по той или иной причине не сработали.
 
@@ -47,7 +62,7 @@
 11. Configure - третий.
 12. Generate.
 12. Копируем путь из второй строки cmake-gui, переходим в консоль. Командой `cd /d d:/Qt/opencvmingw` переключаемся на проект для компиляции. Ключ /d позволяет сменить диск одновременно с папкой
-14. `mingw32-make`. Ждёёёёёёёёёёёёёём.
+14. `mingw32-make`. Ждёёёёёёёёёёёёёём. _Вылезла ошибка, но её описание убежало - [смотри как этого избежать](https://github.com/aleksey-nikolaev/OpenCV-MinGW-Qt-install/wiki/CMD-gui-settings)_
 14. `mingw32-make install`. Можно объединить `mingw32-make && mingw32-make install` в одной строке
 15. повторить с задания `CMAKE_BUILD_TYPE` для другого варианта
 16. По-желанию задать `BUILD_SHARED_LIBS = 0` и повторить. При этом, если есть желание, смените `CMAKE_INSTALL_PREFIX`, так как файлы в папке bin и include\opencv2\cvconfig.h различаются.
@@ -62,7 +77,7 @@ sources\modules\videoio\src\cap_dshow.cpp:2182:41: error:
 'sprintf_instead_use_StringCbPrintfA_or_StringCchPrintfA' was not declared in this scope
 ```
 
-## Сборка OpenCV 2.4.11
+# Сборка OpenCV 2.4.11
 
 С ней всё проще, действия аналогичные сборке 3.0.0, кроме настроек. Надо задать
   * `WITH_QT = 1`
@@ -70,47 +85,3 @@ sources\modules\videoio\src\cap_dshow.cpp:2182:41: error:
 
 и всё. Компилируется значительно дольше.
 
-## Настройка проекта
-
-Для библиотек под win характерно наличие версии и признака `d` (для отладки). Под unix этого нет. Чтобы не было конфликтов можно настроить проект так:
-В среде сборки задать переменные (`CMAKE_INSTALL_PREFIX` помните? Или куда вы это перенесли?)
-Присвоено `OPENCV_INCLUDE_DIR` значение c:/Qt/opencv2.4.11/include
-Присвоено `OPENCV_MINGW_DIR` значение C:/Qt/opencv2.4.11/x64/mingw
-В `PATH` дописать c:\Qt\opencv2.4.11\x64\mingw\bin;c:\Qt\opencv2.4.11\x64\mingw\lib;c:\Qt\opencv2.4.11\x64\mingw\staticlib;
-
-Тогда в .pro можно лаконично оформить подключение
-
-```
-INCLUDEPATH += $$(OPENCV_INCLUDE_DIR)
-
-LIBS += -L$$(OPENCV_MINGW_DIR)/lib
-
-win32:CONFIG(release, debug|release):{
-    SUFFIX = 2411
-}
-else:win32:CONFIG(debug, debug|release):{
-    SUFFIX = 2411d
-}
-else:unix:{
-    SUFFIX =
-}
-
-LIBS += -lopencv_core$${SUFFIX} \
-        -lopencv_highgui$${SUFFIX} \
-        -lopencv_objdetect$${SUFFIX} \
-        -lopencv_imgproc$${SUFFIX} \
-        -lopencv_features2d$${SUFFIX} \
-        -lopencv_calib3d$${SUFFIX} \
-        -lopencv_contrib$${SUFFIX} \
-        -lopencv_nonfree$${SUFFIX} \
-        -lopencv_features2d$${SUFFIX} \
-        -lopencv_flann$${SUFFIX}
-```
-
-## настройка окна `cmd`
-
-Видели ошибку в `cap_dshow.cpp`? Так вот без настройки окна `cmd` её не видно - быстро уползает за экран из-за длинной портянки разные сообщений. Что делать?
-
-Если посмотреть контекстное меню (правая кнопка мыши) там где иконка (окно cmd в миниатюре), то там есть Умолчания и Свойства. Найдите в них Размер буфера экрана и поставьте значение по-больше (пару тысяч).
-
-Теперь самое важное останется доступным.
