@@ -6,11 +6,18 @@
 # Простой способ
 Вполне вероятно подойдёт для всех. Как это ни банально, но cmake проект можно открыть непосредственно в QtCreator. В этом случае будут прописаны все пути и зависимости корректно. Исследовать открытый таким образом проект не очень удобно, но никто не запрещает параллельно запустить cmake-gui и менять параметры по мере необходимости. А чтобы и cmake-gui работал в том же окружении что и QtCreator сделайте bat-файл с таким содержанием:
 
-```
+```batch
+set QTDIR="for example d:\Qt\Qt5.7.0-mingw\5.7\mingw53_32"
+set CMAKEDIR="for example d:\cmake5.4.1"
 call "%QTDIR%\bin\qtenv2.bat"
 start "gui" /B "%CMAKEDIR%\bin\cmake-gui.exe"
 ```
-где `QTDIR` и `CMAKEDIR` переменные с путями до Qt и CMake соответствено.
+где `QTDIR` и `CMAKEDIR` переменные с путями до Qt и CMake соответственно.
+
+Как показал случай, простой способ не всегда работает. В том смысле, что QtCreator не желает конфигурировать opencv. В этом случае единственный выход:
+ * запустить bat-файл так, чтобы окно консоли не закрылось (для этого надо запускать в cmd или shift+enter в TotalCommander),
+ * настроить проект с помощью cmake-gui на тип компилятора MinGW Makefiles,
+ * в консоли перейти (cd < dir >) в папку сборки и запустить `mingw32-make && mingw32-make install`, не забудьте про `CMAKE_INSTALL_PREFIX` - `mingw32-make install` по этому пути сложит всё необходимое.
 
 # OpenCV 3.0.0
 ## Подготовка к сборке
@@ -72,13 +79,12 @@ start "gui" /B "%CMAKEDIR%\bin\cmake-gui.exe"
 За `BUILD_TESTS = 0` отдельное спасибо [Nuzhny](http://rsdn.ru/account/info/32351) за то, что вспомнил.
 `WITH_IPP = 0` уже чаще встречается и кое-где объясняется почему. `WITH_DSHOW = 0` пришлось добавить из-за ошибки в
 
-```
+```js
 sources\modules\videoio\src\cap_dshow.cpp:2182:41: error:
 'sprintf_instead_use_StringCbPrintfA_or_StringCchPrintfA' was not declared in this scope
 ```
 
-# Сборка OpenCV 2.4.11
-
+# Сборка OpenCV3.1.0 или OpenCV2.4.11
 С ней всё проще, действия аналогичные сборке 3.0.0, кроме настроек. Надо задать
   * `WITH_QT = 1`
   * `WITH_OPENGL = 1` 
