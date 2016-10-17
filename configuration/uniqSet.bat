@@ -14,6 +14,7 @@ for %%a in ("!ProjectsPath:;=";"!") do (
     call :uniqTest %%a
     if !ERRORLEVEL! == 0 call :set_append __path_List %%a
 )
+set __path_List=%__path_List:;;=;%
 endlocal & set %1=%__path_List:"=%&
 exit /b 0
 

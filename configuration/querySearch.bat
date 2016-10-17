@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 if "%~1"=="" (
     echo Usage
-    echo call pkgcfg.bat ArrayVariable [ProjectsPathArray [ProjectPathSuffix [wildcard]]]
+    echo call querySearch.bat ArrayVariable [ProjectsPathArray [ProjectPathSuffix [wildcard]]]
     echo  ProjectsPathArray - separated by ; list of directories for search
     echo Also search will be made in all subdirs {first level} for each directory in ProjectsPathArray
     echo If ProjectsPathArray not set the ^%CD^% will be used

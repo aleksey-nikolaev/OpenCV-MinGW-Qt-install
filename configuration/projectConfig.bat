@@ -1,12 +1,12 @@
 @echo off
 
 rem Usage call projectConfig.bat "%ProjectPath%" [LIBPATH INCLUDE]
-rem where variadles LIBPATH and INCLUDE are name for containers
+rem where variables LIBPATH and INCLUDE are name for containers
 rem in which */lib and */include pathes from ProjectPath will be added
 rem  The name used by default are LIBRARY_PATH and CPLUS_INCLUDE_PATH
 
 setlocal
-set querySearch=call %~dp0%pkgcfg.bat
+set querySearch=call %~dp0%querySearch.bat
 set uniqSet=call %~dp0%uniqSet.bat
 
 set ProjectPath=%~1
