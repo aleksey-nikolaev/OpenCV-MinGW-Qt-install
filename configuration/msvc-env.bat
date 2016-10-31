@@ -3,8 +3,6 @@ rem setlocal enabledelayedexpansion
 set uniqSet=call %~dp0%uniqSet.bat
 set projectConfig=call %~dp0%projectConfig.bat
 
-set ProjectPath=d:\Projects
-
 rem this call might be dangerous because PATH appended - never clean
 call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat" 
 %uniqSet% path_uniqSet "%path%"
