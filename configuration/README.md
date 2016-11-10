@@ -1,5 +1,5 @@
 # Configuration
-Placeable tools for making environment for IDE and build.
+Helpful tools for making environment for IDE and build.
 
 #### switch code page
 `manual code page.bat` helps to switch code page for console. Helpful when want to see what compiler or linker  write on output window (in QCreator with MSVC compiler)
@@ -31,4 +31,4 @@ Simple:
   * `msvc-env.bat`
 
 ### Example for launch IDE
-`using-querySearch.bat` make launch IDE easier. Just set correct `QTDIR_base`, `configerPath` and `ProjectPath`
+`using-querySearch.bat` make launch IDE easier. Just set correct `QTDIR_base`, `configerPath` and `ProjectPath`. Also check CMakePath - path to CMake GUI and other settings for your project.
