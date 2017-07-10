@@ -2,13 +2,13 @@
 Helpful tools for making environment for IDE and build.
 
 #### switch code page
-`manual code page.bat` helps to switch code page for console. Helpful when want to see what compiler or linker  write on output window (in QCreator with MSVC compiler)
+**`manual-code-page.bat`** helps to switch code page for console. Helpful when want to see what compiler or linker  write on output window (in QCreator with MSVC compiler)
 
 #### Remove duplicates
-`uniqSet.bat` helps to remove duplicates from the list (separated by `;` without `"`).
+**`uniqSet.bat`** helps to remove duplicates from the list (separated by `;` without `"`).
 
 ### Search for libs, headers, pc-files and etc.
-`querySearch.bat` Make list of subdirectories for directories from the path list, with suffixes if set and check existing of file in the subdirectory by wildcard
+**`querySearch.bat`** Make list of subdirectories for directories from the path list, with suffixes if set and check existing of file in the subdirectory by wildcard
 
 `querySearch.bat ArrayVariable [ProjectsPathArray [ProjectPathSuffix [wildcard]]]`
 
@@ -18,7 +18,7 @@ Helpful tools for making environment for IDE and build.
   - Wildcard used for check existence of file in a subdirectory. For pkg-config files use *.pc
 
 ### Macro for collecting path to libraries, includes, pc-files
-`projectConfig.bat` used `querySearch` for collecting. Founded list sored in to the proper variable.
+**`projectConfig.bat`** used `querySearch` for collecting. Founded list sored in to the proper variable.
 
 `projectConfig.bat "%ProjectPath%;%AnotherPathes%" [LIBPATH INCLUDE]`
 
@@ -27,8 +27,10 @@ First parameter is a directories list separated by `;`. Variables LIBPATH and IN
 
 #### Configuration for IDE:
 Simple:
-  * `mingw-env.bat`
-  * `msvc-env.bat`
+  * `mingw-env.bat "<extra project path list>"`
+  * `msvc-env.bat "<extra project path list>"`
+
+Both of these scripts call projectConfig.bat with `"<extra project path list>"` (for example, ` "%ProjectPath%;%ProjectPath%\opencv\install\x86\vc14"`) as the first parameter, so this list should contain a top directories for the search.
 
 ### Example for launch IDE
-`using-querySearch.bat` make launch IDE easier. Just set correct `QTDIR_base`, `configerPath` and `ProjectPath`. Also check CMakePath - path to CMake GUI and other settings for your project.
+**`using-querySearch.bat`** make launch IDE easier. Just set correct `QTDIR_base`, `configerPath` and `ProjectPath`. Also check CMakePath - path to CMake GUI and other settings for your project.

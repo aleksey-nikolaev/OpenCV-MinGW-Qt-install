@@ -8,7 +8,7 @@ rem this call might be dangerous because PATH appended - never clean
 set path=%path_uniqSet%
 set path_uniqSet=
 
-%projectConfig% "%ProjectPath%;%ProjectPath%\opencv\install\x86\mingw"
+%projectConfig% %1
 
 rem endlocal
 exit /b 0

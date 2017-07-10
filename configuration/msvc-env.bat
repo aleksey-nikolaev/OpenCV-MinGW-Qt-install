@@ -9,7 +9,7 @@ call "%VS140COMNTOOLS%..\..\VC\vcvarsall.bat"
 set path=%path_uniqSet%
 set path_uniqSet=
 
-%projectConfig% "%ProjectPath%;%ProjectPath%\opencv\x86\vc14" LIB INCLUDE
+%projectConfig% %1 LIB INCLUDE
 rem %uniqSet% LIBRARY_PATH "%LIB%"
 rem %uniqSet% CPLUS_INCLUDE_PATH "%INCLUDE%"
 
