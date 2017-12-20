@@ -1,6 +1,6 @@
 @echo off
 set __CD_=%CD%
-set QTDIR_base=D:\Qt\Qt5\5.8
+set QTDIR_base=D:\Qt\Qt5\5.10.0
 set CMakePath=D:\Tools\cmake-3.8.1-win64-x64\bin
 set configerPath=d:\Tools\OpenCV-MinGW-Qt-install\configuration
 
@@ -12,7 +12,7 @@ if "%choiseCode%" geq "5" (
     call :starter
 )
 set path=%path%;%ADDITIONAL_PATH%\lib
-if "%choiseCode%" == "1" start /B /D "%VS140COMNTOOLS%..\IDE" devenv.exe /useenv
+if "%choiseCode%" == "1" start /B /D "%VS150COMNTOOLS%..\IDE" devenv.exe /useenv
 if "%choiseCode%" == "2" start /B /D "%QTDIR%\..\..\Tools\QtCreator\bin" qtcreator.exe
 if "%choiseCode%" == "3" start /B /D "%CMakePath%" %CMakePath%\cmake-gui.exe
 if "%choiseCode%" == "4" cd %__CD_%\additional && additional.py --src ./ --dest %ADDITIONAL_PATH%
@@ -31,9 +31,9 @@ rem -------------------------------
     set ADDITIONAL_PATH=%ProjectPath%\additional-bin
     set QMAKEFEATURES=%ADDITIONAL_PATH%\features
     
-    set QTDIR=%QTDIR_base%\msvc2015
+    set QTDIR=%QTDIR_base%\msvc2017_64
     call %QTDIR%\bin\qtenv2.bat 
-    call %configerPath%\msvc-env.bat "%ProjectPath%;%ProjectPath%\opencv\install\x86\vc14"
+    call %configerPath%\msvc-env.bat "%ProjectPath%;%ProjectPath%\opencv\install\x64\vc15"
 exit /b 0
 
 rem -------------------------------
