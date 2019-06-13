@@ -31,7 +31,7 @@ Simple:
 
 Both of these scripts call projectConfig.bat with `"<extra project path list>"` (for example, ` "%ProjectPath%;%ProjectPath%\opencv\install\x86\vc14"`) as the first parameter, so this list should contain a top directories for the search.
 
-### CMake build helper `buildcmakeproject.bat`
+### CMake multi-configuration build helper `buildcmakeproject.bat`
 **`buildcmakeproject.bat`** has three forms to make it easier to build an external project.
 ```batch
 call buildcmakeproject <project name> <git address> <cmake additional> 
@@ -46,6 +46,9 @@ Before you call `buildcmakeproject.bat` set:
 
 Example:
 ```batch
+set DEPENDENCY_ROOT_PATH=c:/dependency
+set DEPENDENCY_INSTALL_PATH=%DEPENDENCY_ROOT_PATH%/install
+
 if "%VS150COMNTOOLS%"=="" (
   echo Configure for MinGW
   set CONFIGURE_CMAKE_GENERATOR=-G"CodeBlocks - MinGW Makefiles"
